@@ -1,8 +1,8 @@
-import {ADD_COMMENT} from './action'
-import {EDIT_COMMENT} from './action'
-import {REMOVE_COMMENT} from './action'
-import {THUMB_UP_COMMENT} from './action'
-import {THUMB_DOWN_COMMENT} from './action'
+import {ADD_COMMENT} from './actions'
+import {EDIT_COMMENT} from './actions'
+import {REMOVE_COMMENT} from './actions'
+import {THUMB_UP_COMMENT} from './actions'
+import {THUMB_DOWN_COMMENT} from './actions'
 
 
 
@@ -11,10 +11,10 @@ function comments(state = [], action) {
         case ADD_COMMENT:
             return [{
                 id: action.id,
-                text: action.text
+                text: action.text,
                 votes: 0
             }
-            , ...state.comments];
+            , ...state];
 
         case REMOVE_COMMENT:
             return Object.assign({}, state, {
@@ -22,30 +22,36 @@ function comments(state = [], action) {
             });
 
         case EDIT_COMMENT:
-        	return [{
-        		id: action.id,
+          return state.map(comment => {
+            if (comment.id === action.id) {
+              return { ...comment,
                 text: action.text
-                votes: 1
-        	}
-        	, ...state.comments];  
+              }
+            }
+            return comment;
+          });
 
-        case THUMB_UP_COMMENT:
-        	return [{
-        		id: action.id,
-                text: action.text
-                votes: 2
-        	}
-        	, ...state.comments];
+    case THUMB_UP_COMMENT:
+      return state.map(comment => {
+        if (comment.id === action.id) {
+          return { ...comment,
+            votes: comment.votes + 1
+          }
+        }
+        return comment;
+      });
 
-        case THUMB_DOWN_COMMENT:
-        	return [{
-        		id: action.id,
-                text: action.text
-                votes: 3
-        	}
-        	, ...state.comments];	
-
+    case THUMB_DOWN_COMMENT:
+      return state.map(comment => {
+        if (comment.id === action.id) {
+          return { ...comment,
+            votes: comment.votes - 1
+          }
+        }
+        return comment;
+      });
         default:
             return state;    
     }
 }
+export default comments;
