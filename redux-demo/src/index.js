@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
-import {addComment, editComment, removeComment, thumbUpComment, thumbDownComment} from './actions.js'
+import {addComment} from './actions'
 import { createStore } from 'redux';
 import reducer from './reducer'
 
